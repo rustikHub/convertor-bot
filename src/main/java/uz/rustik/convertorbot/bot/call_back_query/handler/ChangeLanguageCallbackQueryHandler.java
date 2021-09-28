@@ -23,7 +23,6 @@ import java.util.Locale;
 public class ChangeLanguageCallbackQueryHandler implements CallBackQueryHandler {
 
 
-
     private final ChatService chatService;
     private final TranslatorBot translatorBot;
     private final BotStateContext botStateContext;
@@ -51,11 +50,15 @@ public class ChangeLanguageCallbackQueryHandler implements CallBackQueryHandler 
         translatorBot.deleteMessage(new DeleteMessage(chat.getId().toString(), message.getMessageId()));
 
         if (chat.getCache() != null && !chat.getCache().isEmpty()) {
-            BotState botState = BotState.valueOf(chat.getCache());
-            chat.setCache("");
-            chat.setBotState(botState);
-            chatService.saveOrUpdate(chat);
-            return botStateContext.processInputMessage(botState, message);
+            try {
+                BotState botState = BotState.valueOf(chat.getCache());
+                chat.setCache("");
+                chat.setBotState(botState);
+                chatService.saveOrUpdate(chat);
+                return botStateContext.processInputMessage(botState, message);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
 
         chatService.setChatStateByChatId(chat.getId(), BotState.MAIN_MENU);

@@ -29,7 +29,6 @@ public class ChatService {
 
         if (chat == null) {
             chat = new Chat(chatId);
-            chat.setCache("new");
         }
 
         chat.setBotState(botState);
