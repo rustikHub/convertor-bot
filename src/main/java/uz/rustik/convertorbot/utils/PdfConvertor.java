@@ -1,8 +1,5 @@
 package uz.rustik.convertorbot.utils;
 
-import org.apache.pdfbox.cos.COSDocument;
-import org.apache.pdfbox.io.RandomAccessReadBuffer;
-import org.apache.pdfbox.pdfparser.PDFParser;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import uz.rustik.convertorbot.tool.Convertor;
@@ -20,17 +17,26 @@ public class PdfConvertor extends Convertor {
         } else {
             text = convertUzbToKirill(text);
         }
+        System.out.println(text);
         return text;
     }
 
     private String getStringFromPdfDocument(InputStream inputStream) throws IOException {
-        PDFParser pdfParser = new PDFParser(new RandomAccessReadBuffer(inputStream));
 
-        COSDocument cosDocument = pdfParser.getDocument();
+        PDDocument pdDocument = PDDocument.load(inputStream);
+
+
         PDFTextStripper pdfTextStripper = new PDFTextStripper();
-        PDDocument pdDocument = new PDDocument(cosDocument);
 
-        return pdfTextStripper.getText(pdDocument);
+        String text = "";
+
+        try {
+            text = pdfTextStripper.getText(pdDocument);
+        } catch (Exception e) {
+            System.out.println("Can not get text from pdf!");
+        }
+//        System.out.println(text);
+        return text;
     }
 
 /* Just for Testing

@@ -192,7 +192,6 @@ public class InputMessageHandler implements InputMessageHandlerInterface {
                             chatService.saveOrUpdate(chat);
 
 
-
                             return sendMessage;
                         }
                     }
@@ -265,7 +264,9 @@ public class InputMessageHandler implements InputMessageHandlerInterface {
 
         try {
             convertedText = pdfConvertor.convert(new FileInputStream(downloadedFile), convertorType);
-
+            if (convertedText.isEmpty()) {
+                return null;
+            }
             Path path = Files.write(Paths.get("src/main/resources/temp_files/" + hash(chat.getId()) + ".txt"), convertedText.getBytes(StandardCharsets.UTF_8));
             File temp_File = path.toFile();
 
