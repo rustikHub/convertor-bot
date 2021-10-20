@@ -17,7 +17,7 @@ public class PdfConvertor extends Convertor {
         } else {
             text = convertUzbToKirill(text);
         }
-        System.out.println(text);
+//        System.out.println(text);
         return text;
     }
 
